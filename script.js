@@ -1,4 +1,17 @@
-const myLibrary = [];
+const myLibrary = [
+   {
+      title: "To Kill a Mockingbird", 
+      author: "Harper Lee", 
+      pages: 281, 
+      read: true,
+   },
+   {
+      title: "1984",
+      author: "George Orwell",
+      pages: 328,
+      read: false,
+   }
+];
 
 function Book(title, author, pages, read) {
  if (!new.target) {
@@ -12,15 +25,15 @@ function Book(title, author, pages, read) {
 }
 
 function addBookToLibrary() {
-
+   
 }
 
 
-function displayBooks(myLibrary) {
+function displayBooks() {
    const container = document.querySelector('.container');
    container.textContent = '';
 
-   myLibrary.array.forEach(book => {
+   myLibrary.forEach(book => {
       const bookCard = document.createElement('div');
       bookCard.classList.add('card');
 
@@ -39,7 +52,9 @@ function displayBooks(myLibrary) {
       const readEl = document.createElement('p');
       readEl.textContent = `Read: ${book.read ? "Read" : "Not read"}`;
       bookCard.appendChild(readEl);
+
+      container.appendChild(bookCard);
    });
-   container.appendChild(bookCard);
-      
 }
+
+displayBooks();
