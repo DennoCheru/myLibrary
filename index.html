@@ -8,7 +8,7 @@
     <title>My Library</title>
 </head>
 <body>
-    <div>
+    <div class="addBook">
         <button id="addBookBtn">Add Book</button>
     </div>    
     <div class="container"></div>
@@ -26,6 +26,9 @@
 
             <label for="read">Read</label>
             <input type="checkbox" name="read" id="read">
+
+            <label for="cover">Book Cover</label>
+            <input type="file" id="cover" name="cover" accept="image/*">
 
             <button id="closeBtn" type="submit">Add Book</button>
         </form>

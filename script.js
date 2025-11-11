@@ -30,8 +30,14 @@ function addBookToLibrary() {
    const author = document.querySelector('#author').value;
    const pages = document.querySelector('#pages').value;
    const read = document.querySelector('#read').checked;
+   const cover = document.querySelector("#cover");
 
-   const newBook = new Book(title,author,pages,read);
+   let coverURL = null;
+   if (cover.files.length > 0) {
+      coverURL = URL.createObjectURL(cover.files[0]);
+   }
+
+   const newBook = new Book(title,author,pages,read, coverURL);
    myLibrary.push(newBook);
 }
 
