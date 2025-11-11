@@ -17,6 +17,11 @@
   margin: 0;
 }
 
+:root {
+  --button-bg: #1f95bd;
+  --button-bg-hover: #095592;
+}
+
 /* 3. Enable keyword animations */
 @media (prefers-reduced-motion: no-preference) {
   html {
@@ -66,11 +71,32 @@ h1, h2, h3, h4, h5, h6 {
   isolation: isolate;
 }
 
+.addBook {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.addBook button {
+  border: none;
+  border-radius: 5px;
+  padding: 1rem;
+  cursor: pointer;
+  color: white;
+  background-color: var(--button-bg);
+}
+
+.addBook button:hover {
+  background-color: var(--button-bg-hover);
+}
+
 .container {
   height: 100vh;
   padding: 1.5rem;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(auto-fit,minmax(0, 0.5fr));
   gap: 1rem;
 }
 
@@ -78,10 +104,12 @@ h1, h2, h3, h4, h5, h6 {
   background-color: aliceblue;
   padding: 1rem;
   line-height: 1.5rem;
+  border-radius: 6px;
 }
 
 .card .book-cover {
   width: 20%;
+  height: 25%%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -91,4 +119,17 @@ h1, h2, h3, h4, h5, h6 {
   justify-content: flex-end;
   align-items: center;
   gap: 1rem;
+}
+
+.card button {
+  background-color: var(--button-bg);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.card button:hover {
+  background-color: var(--button-bg-hover);
 }
