@@ -1,3 +1,4 @@
+const container = document.querySelector('.container');
 const dialog = document.querySelector('dialog');
 const showButton = document.querySelector('#addBookBtn');
 const closeBtn = document.querySelector('#closeBtn');
@@ -5,12 +6,14 @@ const form = document.querySelector('form');
 
 const myLibrary = [
    {
+      id : crypto.randomUUID(),
       title: "To Kill a Mockingbird", 
       author: "Harper Lee", 
       pages: 281, 
       read: true,
    },
-   {
+   {  
+      id : crypto.randomUUID(),
       title: "1984",
       author: "George Orwell",
       pages: 328,
@@ -39,14 +42,22 @@ function addBookToLibrary() {
    myLibrary.push(newBook);
 }
 
+function removeBook(id) {
+   const index = myLibrary.findIndex(book => book.id === id);
+   if (index !== -1) {
+      myLibrary.splice(index, 1);
+   }
+   displayBooks();
+}
+
 
 function displayBooks() {
-   const container = document.querySelector('.container');
    container.textContent = '';
 
    myLibrary.forEach(book => {
       const bookCard = document.createElement('div');
       bookCard.classList.add('card');
+      bookCard.dataset.id = book.id;
 
       const titleEl = document.createElement('h3');
       titleEl.textContent = `Title: ${book.title}`;
@@ -64,6 +75,11 @@ function displayBooks() {
       readEl.textContent = `Read: ${book.read ? "Read" : "Not read"}`;
       bookCard.appendChild(readEl);
 
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = 'Delete';
+      deleteBtn.classList.add("deleteBtn")
+      bookCard.appendChild(deleteBtn);
+
       container.appendChild(bookCard);
    });
 }
@@ -80,5 +96,13 @@ form.addEventListener("submit", (e) => {
    form.reset();
    displayBooks();
 });
+
+container.addEventListener("click", (e) => {
+   if (e.target.classList.contains('deleteBtn')) {
+      const card = e.target.closest('.card');
+      const bookId = card.dataset.id;
+      removeBook(bookId);
+   }
+})
 
 displayBooks();
