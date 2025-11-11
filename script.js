@@ -5,15 +5,15 @@ const closeBtn = document.querySelector('#closeBtn');
 const form = document.querySelector('form');
 
 const myLibrary = [
-   new Book("To Kill a Mockingbird", "Harper Lee", 281, true),
-   new Book("1984", "George Orwell", 328, false),
-   new Book("Pride and Prejudice", "Jane Austen", 279, true),
-   new Book("The Great Gatsby", "F. Scott Fitzgerald", 180, false),
-   new Book("Moby-Dick", "Herman Melville", 585, true),
-   new Book("War and Peace", "Leo Tolstoy", 1225, false),
+   new Book("To Kill a Mockingbird", "Harper Lee", 281, true, "./images/to_kill_a_mockingbird.jpg"),
+   new Book("1984", "George Orwell", 328, false, "./images/1984.jpg"),
+   new Book("Pride and Prejudice", "Jane Austen", 279, true, "./images/pride_and_prejudice.jpg"),
+   new Book("The Great Gatsby", "F. Scott Fitzgerald", 180, false, "./images/the_great_gatsby.jpg"),
+   new Book("Moby-Dick", "Herman Melville", 585, true, "./images/moby_dick.jpeg"),
+   new Book("War and Peace", "Leo Tolstoy", 1225, false, "./images/war_and_peace.jpg"),
 ];
 
-function Book(title, author, pages, read) {
+function Book(title, author, pages, read, cover) {
  if (!new.target) {
     throw Error('You must use the new operator to call this constructor');
  }
@@ -22,6 +22,7 @@ function Book(title, author, pages, read) {
  this.author = author;
  this.pages = pages;
  this.read = read;
+ this.cover = cover;
 }
 
 function addBookToLibrary() {
@@ -53,6 +54,14 @@ function displayBooks() {
       const bookCard = document.createElement('div');
       bookCard.classList.add('card');
       bookCard.dataset.id = book.id;
+
+      if(book.cover) {
+         const imgEl = document.createElement('img');
+         imgEl.src = book.cover;
+         imgEl.alt = `${book.title} cover`;
+         imgEl.classList.add('book-cover');
+         bookCard.appendChild(imgEl);
+      }
 
       const titleEl = document.createElement('h3');
       titleEl.textContent = `Title: ${book.title}`;
