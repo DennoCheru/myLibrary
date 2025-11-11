@@ -133,3 +133,48 @@ h1, h2, h3, h4, h5, h6 {
 .card button:hover {
   background-color: var(--button-bg-hover);
 }
+
+dialog {
+  background: center url("./images/library.jpg") no-repeat;
+  background-size: cover;
+  color: white;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 5px;
+  padding: 1.5rem;
+  width: auto;
+}
+
+dialog form {
+  display: grid;
+  gap: 1rem;
+  grid-template-rows: repeat(2, 1fr);
+}
+
+form button,
+form input {
+  font-family: inherit;
+  font-size: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  border: none;
+}
+
+form input[checkbox] {
+
+}
+
+form button {
+  padding: 1rem;
+  background-color: var(--button-bg);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  color: white;
+}
+
+form button:hover {
+  background-color: var(--button-bg-hover);
+}
