@@ -25,6 +25,10 @@ function Book(title, author, pages, read, cover) {
  this.cover = cover;
 }
 
+Book.prototype.toggleReadStatus = function() {
+   this.read = !this.read;
+}
+
 function addBookToLibrary() {
    const title = document.querySelector('#title').value;
    const author = document.querySelector('#author').value;
@@ -47,10 +51,6 @@ function removeBook(id) {
       myLibrary.splice(index, 1);
    }
    displayBooks();
-}
-
-Book.prototype.toggleReadStatus = function() {
-   this.read = !this.read;
 }
 
 function displayBooks() {
