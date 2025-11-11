@@ -5,20 +5,8 @@ const closeBtn = document.querySelector('#closeBtn');
 const form = document.querySelector('form');
 
 const myLibrary = [
-   {
-      id : crypto.randomUUID(),
-      title: "To Kill a Mockingbird", 
-      author: "Harper Lee", 
-      pages: 281, 
-      read: true,
-   },
-   {  
-      id : crypto.randomUUID(),
-      title: "1984",
-      author: "George Orwell",
-      pages: 328,
-      read: false,
-   }
+   new Book("To Kill a Mockingbird", "Harper Lee", 281, true),
+   new Book("1984", "George Orwell", 328, false)
 ];
 
 function Book(title, author, pages, read) {
@@ -50,6 +38,9 @@ function removeBook(id) {
    displayBooks();
 }
 
+Book.prototype.toggleReadStatus = function() {
+   this.read = !this.read;
+}
 
 function displayBooks() {
    container.textContent = '';
@@ -75,10 +66,20 @@ function displayBooks() {
       readEl.textContent = `Read: ${book.read ? "Read" : "Not read"}`;
       bookCard.appendChild(readEl);
 
+      const div = document.createElement('div');
+
+      const changeReadBtn = document.createElement('button')
+      changeReadBtn.textContent = book.read ? "Mark Unread" : "Mark Read";
+      changeReadBtn.classList.add('changeReadBtn');
+      div.appendChild(changeReadBtn);
+
+
       const deleteBtn = document.createElement('button');
       deleteBtn.textContent = 'Delete';
       deleteBtn.classList.add("deleteBtn")
-      bookCard.appendChild(deleteBtn);
+      div.appendChild(deleteBtn)
+
+      bookCard.appendChild(div);
 
       container.appendChild(bookCard);
    });
@@ -98,11 +99,23 @@ form.addEventListener("submit", (e) => {
 });
 
 container.addEventListener("click", (e) => {
+   
+   const card = e.target.closest('.card');
+   if(!card) return;
+
+   const bookId = card.dataset.id;
+
    if (e.target.classList.contains('deleteBtn')) {
-      const card = e.target.closest('.card');
-      const bookId = card.dataset.id;
       removeBook(bookId);
    }
-})
+
+   if (e.target.classList.contains('changeReadBtn')) {
+      const book = myLibrary.find(book => book.id === bookId);
+      if (book) {
+         book.toggleReadStatus();
+         displayBooks()
+      }
+   }
+});
 
 displayBooks();
