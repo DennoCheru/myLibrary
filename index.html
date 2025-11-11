@@ -9,8 +9,26 @@
 </head>
 <body>
     <div>
-        <button>Add Book</button>
+        <button id="addBookBtn">Add Book</button>
     </div>    
     <div class="container"></div>
+    <dialog>
+        <form action="" method="dialog">
+            <h2>Add book</h2>
+            <label for="title">Title</label>
+            <input type="text" name="title" id="title" autofocus>
+
+            <label for="author">author</label>
+            <input type="text" name="author" id="author">
+
+            <label for="pages">pages</label>
+            <input type="number" name="pages" id="pages">
+
+            <label for="read">Read</label>
+            <input type="checkbox" name="read" id="read">
+
+            <button id="closeBtn" type="submit">Add Book</button>
+        </form>
+    </dialog>
 </body>
 </html>

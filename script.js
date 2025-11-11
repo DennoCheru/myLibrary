@@ -1,3 +1,8 @@
+const dialog = document.querySelector('dialog');
+const showButton = document.querySelector('#addBookBtn');
+const closeBtn = document.querySelector('#closeBtn');
+const form = document.querySelector('form');
+
 const myLibrary = [
    {
       title: "To Kill a Mockingbird", 
@@ -25,7 +30,13 @@ function Book(title, author, pages, read) {
 }
 
 function addBookToLibrary() {
-   
+   const title = document.querySelector('#title').value;
+   const author = document.querySelector('#author').value;
+   const pages = document.querySelector('#pages').value;
+   const read = document.querySelector('#read').checked;
+
+   const newBook = new Book(title,author,pages,read);
+   myLibrary.push(newBook);
 }
 
 
@@ -56,5 +67,18 @@ function displayBooks() {
       container.appendChild(bookCard);
    });
 }
+
+showButton.addEventListener("click", () => {
+   dialog.showModal();
+});
+
+form.addEventListener("submit", (e) => {
+   e.preventDefault();
+
+   addBookToLibrary();
+   dialog.close();
+   form.reset();
+   displayBooks();
+});
 
 displayBooks();
