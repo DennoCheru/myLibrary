@@ -56,4 +56,12 @@ h1, h2, h3, h4, h5, h6 {
 .container {
   background: center url(./images/library.jpg) no-repeat;
   background-size: cover;
+  height: 100vh;
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.card .book-cover {
+  width: 15%;
 }
