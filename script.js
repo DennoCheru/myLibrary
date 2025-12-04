@@ -1,12 +1,3 @@
-const myLibrary = [
-   new Book("To Kill a Mockingbird", "Harper Lee", 281, true, "./images/to_kill_a_mockingbird.jpg"),
-   new Book("1984", "George Orwell", 328, false, "./images/1984.jpg"),
-   new Book("Pride and Prejudice", "Jane Austen", 279, true, "./images/pride_and_prejudice.jpg"),
-   new Book("The Great Gatsby", "F. Scott Fitzgerald", 180, false, "./images/the_great_gatsby.jpg"),
-   new Book("Moby-Dick", "Herman Melville", 585, true, "./images/moby_dick.jpeg"),
-   new Book("War and Peace", "Leo Tolstoy", 1225, false, "./images/war_and_peace.jpg"),
-];
-
 class Book {
    id;
    title;
@@ -30,45 +21,47 @@ class Book {
 }
 
 class Library {
-   myLibrary;
-
    constructor() {
-      myLibrary = [];
+      this.books = [];
    }
 
-   addBookToLibrary() {
-      const title = document.querySelector('#title').value;
-      const author = document.querySelector('#author').value;
-      const pages = document.querySelector('#pages').value;
-      const read = document.querySelector('#read').checked;
-      const cover = document.querySelector("#cover");
-
-      let coverURL;
-      if (cover.files.length > 0) {
-         coverURL = URL.createObjectURL(cover.files[0]);
-      }
-
-      const newBook = new Book(title, author, pages, read, coverURL);
-      myLibrary.push(newBook);
+   addBook(book) {
+      this.books.push(book);
    }
-
+   
    removeBook(id) {
-      const index = myLibrary.findIndex(book => book.id === id);
+      const index = this.books.findIndex(book => book.id === id);
       if(index !== -1) {
-         myLibrary.splice(index, 1);
+         this.books.splice(index, 1);
       }
-      displayBooks()
    }
 
-   displayBooks() {
-      const container = document.querySelector('.container');
-      const dialog = document.querySelector('dialog');
-      const showButton = document.querySelector('#addBookBtn');
-      const closeBtn = document.querySelector('#closeBtn');
-      const form = document.querySelector('form');
+   toggleReadStatus(id) {
+      const index = this.books.findIndex(book => book.id === id);
+      this.books[index].read = !this.books[index].read;
+   }
 
+   getBooks() {
+      return this.books;
+   }
+}
+
+class DisplayController {
+   constructor(library) {
+      this.library = library;
+      this.container = document.querySelector('.container');
+      this.dialog = document.querySelector('dialog');
+      this.showButton = document.querySelector('#addBookBtn');
+      this.closeBtn = document.querySelector('#closeBtn');
+      this.form = document.querySelector('form');
+
+      this.initEventListeners()
+   }
+
+      displayBooks() {   
+      this.container.textContent = "";
       
-      myLibrary.forEach(book => {
+      this.library.getBooks().forEach(book => {
          const bookCard = document.createElement('div');
          bookCard.classList.add('card');
          bookCard.dataset.id = book.id;
@@ -112,42 +105,71 @@ class Library {
 
          bookCard.appendChild(div);
 
-         container.appendChild(bookCard);
+         this.container.appendChild(bookCard);
+      });
+   }  
 
-         showButton.addEventListener("click", () => {
-            dialog.showModal();
-         });
+   initEventListeners() {
+      this.showButton.addEventListener("click", () => {
+         this.dialog.showModal();
+      });
 
-         form.addEventListener("submit", (e) => {
-            e.preventDefault();
+      this.form.addEventListener("submit", (e) => {
+         e.preventDefault();
             
-            this.addBookToLibrary();
-            dialog.close()
-            form.reset()
+         this.addBookToLibrary();
+         dialog.close()
+         form.reset()
+         this.displayBooks();
+      });
+
+      this.container.addEventListener("click", (e) => {
+         const card = e.target.closest('.card');
+         if (!card) return;
+
+         const bookId = card.dataset.id;
+         if (e.target.classList.contains('deleteBtn')) {
+            this.removeBook(bookId);
+         };
+
+         if (e.target.classList.contains('changeReadBtn')) {
+            this.library.toggleReadStatus(bookId);
             this.displayBooks();
-         });
-
-         container.addEventListener("click", (e) => {
-            const card = e.target.closest('.card');
-            if (!card) return;
-
-            const bookId = card.dataset.id;
-            if (e.target.classList.contains('deleteBtn')) {
-               this.removeBook(bookId);
-            };
-
-            if (e.target.classList.contains('changeReadBtn')) {
-               const book = myLibrary.find(book => book.id === id);
-               if (book) {
-                  book.toggleReadStatus();
-                  this.displayBooks();
-               }
-            }
-         })
+         }
       });
    }
 
-   
+   addBookToLibrary() {
+      const title = document.querySelector('#title').value;
+      const author = document.querySelector('#author').value;
+      const pages = document.querySelector('#pages').value;
+      const read = document.querySelector('#read').checked;
+      const cover = document.querySelector("#cover");
+
+      let coverURL;
+      if (cover.files.length > 0) {
+         coverURL = URL.createObjectURL(cover.files[0]);
+      }
+
+      const newBook = new Book(title, author, pages, read, coverURL);
+      this.library.addBook(newBook);
+      
+      this.displayBooks();
+   }
+
+   removeBook(id) {
+      this.library.removeBook(id);
+      this.displayBooks();
+   } 
 }
 
-Library.displayBooks();
+const myLibrary = new Library();
+myLibrary.addBook(new Book("To Kill a Mockingbird", "Harper Lee", 281, true, "./images/to_kill_a_mockingbird.jpg"));
+myLibrary.addBook(new Book("1984", "George Orwell", 328, false, "./images/1984.jpg"));
+myLibrary.addBook(new Book("Pride and Prejudice", "Jane Austen", 279, true, "./images/pride_and_prejudice.jpg"));
+myLibrary.addBook(new Book("The Great Gatsby", "F. Scott Fitzgerald", 180, false, "./images/the_great_gatsby.jpg"));
+myLibrary.addBook(new Book("Moby-Dick", "Herman Melville", 585, true, "./images/moby_dick.jpeg"));
+myLibrary.addBook(new Book("War and Peace", "Leo Tolstoy", 1225, false, "./images/war_and_peace.jpg"));
+
+const displayController = new DisplayController(myLibrary);
+displayController.displayBooks();
