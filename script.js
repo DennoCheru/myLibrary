@@ -129,7 +129,8 @@ class DisplayController {
 
          const bookId = card.dataset.id;
          if (e.target.classList.contains('deleteBtn')) {
-            this.removeBook(bookId);
+            this.library.removeBook(bookId);
+            this.displayBooks();
          };
 
          if (e.target.classList.contains('changeReadBtn')) {
@@ -156,11 +157,6 @@ class DisplayController {
       
       this.displayBooks();
    }
-
-   removeBook(id) {
-      this.library.removeBook(id);
-      this.displayBooks();
-   } 
 }
 
 const myLibrary = new Library();
