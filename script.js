@@ -13,21 +13,28 @@ const myLibrary = [
    new Book("War and Peace", "Leo Tolstoy", 1225, false, "./images/war_and_peace.jpg"),
 ];
 
-function Book(title, author, pages, read, cover) {
- if (!new.target) {
-    throw Error('You must use the new operator to call this constructor');
- }
- this.id = crypto.randomUUID();
- this.title = title;
- this.author = author;
- this.pages = pages;
- this.read = read;
- this.cover = cover;
+class Book {
+   id;
+   title;
+   author;
+   pages;
+   read;
+   cover;
+
+   constructor(title, author, pages, read, cover) {
+      this.id = crypto.randomUUID();
+      this.title = title;
+      this.author = author;
+      this.pages = pages;
+      this.read = read;
+      this.cover = cover;
+   }
+
+   toggleReadStatus() {
+      this.read = !this.read;
+   }
 }
 
-Book.prototype.toggleReadStatus = function() {
-   this.read = !this.read;
-}
 
 function addBookToLibrary() {
    const title = document.querySelector('#title').value;
