@@ -55,10 +55,16 @@ class DisplayController {
       this.closeBtn = document.querySelector('#closeBtn');
       this.form = document.querySelector('form');
 
+      this.fields = [
+         document.querySelector('#title'),
+         document.querySelector('#author'),
+         document.querySelector('#pages'),
+      ];
+
       this.initEventListeners()
    }
 
-      displayBooks() {   
+   displayBooks() {   
       this.container.textContent = "";
       
       this.library.getBooks().forEach(book => {
@@ -107,7 +113,26 @@ class DisplayController {
 
          this.container.appendChild(bookCard);
       });
-   }  
+   }
+
+   showError(field) {
+      const error = field.nextElementSibling;
+      const v = field.validity;
+
+      if (v.valid) {
+         error.textContent = "";
+      } else if (v.badInput) {
+         error.textContent = "Only numbers are allowed"
+      } else if (v.valueMissing) {
+         error.textContent = "This field is required"
+      } else if (v.tooShort) {
+         error.textContent = `This field requires at least ${field.minLength} characters, you have entered ${field.value.length}`
+      } else if (v.rangeUnderflow) {
+         error.textContent = `The minimum number of pages allowed is ${field.min}`
+      } else if (v.stepMismatch) {
+         error.textContent = "Only whole numbers are accepted"
+      }
+   } 
 
    initEventListeners() {
       this.showButton.addEventListener("click", () => {
@@ -116,11 +141,17 @@ class DisplayController {
 
       this.form.addEventListener("submit", (e) => {
          e.preventDefault();
+
+         this.fields.forEach((field) => this.showError(field));
+
+         if (!this.form.checkValidity()) {
+            this.form.querySelector(':invalid').focus();
+            return;
+         }
             
          this.addBookToLibrary();
-         dialog.close()
-         form.reset()
-         this.displayBooks();
+         this.dialog.close()
+         this.form.reset()
       });
 
       this.container.addEventListener("click", (e) => {
@@ -137,6 +168,20 @@ class DisplayController {
             this.library.toggleReadStatus(bookId);
             this.displayBooks();
          }
+      });
+      
+      this.fields.forEach((field) => {
+         field.addEventListener('input', () => this.showError(field));
+         field.addEventListener('blur', () => this.showError(field));
+      });
+
+      this.dialog.addEventListener('close', () => {
+         this.form.reset();
+
+         this.fields.forEach((field) => {
+            field.setCustomValidity('');
+            field.nextElementSibling.textContent = '';
+         });
       });
    }
 
